@@ -1,0 +1,7 @@
+[package]
+name = "greptty"
+version = "0.1.0"
+authors = ["Realglobe Inc. <greptty@realglobe.jp>"]
+edition = "2018"
+
+[dependencies]
