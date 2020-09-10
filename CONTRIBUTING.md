@@ -2,13 +2,13 @@
 
 Thank you for contributing to greptty!
 
-Please note that by contributing to this project you agree to abide by a [Contributor Code of Conduct](COTRIBUTING.md).
+Please note that by contributing to this project you agree to abide by a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
 And please understand that Japanese are sometime used in this project,
 because main developers are Japanese who are not good at English:wink:
 
 greptty にコントリビューションいただきありがとうございます！
 
-このプロジェクトにコントリビューションすることは[コントリビューター行動規範](COTRIBUTING_JP.md)に同意したことになりますのでご留意ください。
+このプロジェクトにコントリビューションすることは[コントリビューター行動規範](CODE_OF_CONDUCT_JP.md)に同意したことになりますのでご留意ください。
 また、主な開発者が英語に不得手なので時々日本語が使われることがありますのでご了承ください:wink:
 
 ## Issues and PR
