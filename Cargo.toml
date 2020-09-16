@@ -5,3 +5,4 @@ authors = ["Realglobe Inc. <greptty@realglobe.jp>"]
 edition = "2018"
 
 [dependencies]
+serialport = { version = "^3.3.0", default-features = false }
