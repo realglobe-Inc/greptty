@@ -13,5 +13,17 @@ Clone this repository and execute next command at the repository directory.
 cargo install
 ```
 
+## Run eamples
+
+### Detect and read usb_co2
+
+```sh
+# macOS
+./examples/detect_co2.sh /dev/cu.usbmodem
+# Linux
+./examples/detect_co2.sh /dev/ttyUSB
+./examples/detect_co2.sh /dev/ttyACM
+```
+
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
