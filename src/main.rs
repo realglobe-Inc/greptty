@@ -1,5 +1,7 @@
 use std::{fs, io};
 use std::process::Command;
+use std::fs::File;
+use std::io::prelude::*;
 
 fn main() -> io::Result<()> {
     // FIXME: this code includes many unwrap()
@@ -10,7 +12,12 @@ fn main() -> io::Result<()> {
         .collect::<Vec<_>>();
 
     for port_name in port_names {
-        set_baud_rate(port_name, 9600)
+        set_baud_rate(port_name.clone(), 9600);
+        let mut port = File::open(port_name).expect("can't open port");
+
+        let mut contents = String::new();
+        port.read_to_string(&mut contents).expect("something wrong");
+        println!("{}", contents);
     }
 
     Ok(())
