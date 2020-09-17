@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 serialport = { version = "^3.3.0", default-features = false }
+tokio = { version = "^0.2.22", features = ["full"] }
