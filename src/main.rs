@@ -1,16 +1,12 @@
-use std::{fs, io};
-use std::io::BufReader;
 use std::process::Command;
 use tokio::fs::File;
-use std::io::prelude::*;
 
 use tokio::prelude::*;
-use tokio::stream::StreamExt;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // FIXME: this code includes many unwrap()
-    let port_names = fs::read_dir("/dev/").unwrap()
+    let port_names = std::fs::read_dir("/dev/").unwrap()
         .map(|res| res.map(|e| e.path()))
         .map(|path| path.unwrap().into_os_string().into_string().unwrap())
         .filter(|path| path.starts_with("/dev/ttyACM"))
