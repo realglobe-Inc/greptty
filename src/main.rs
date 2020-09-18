@@ -1,12 +1,32 @@
 use std::process::Command;
+use std::io::BufReader;
 
 use tokio::fs::File;
 use tokio::prelude::*;
 use tokio::time::{self, Duration};
 
+use regex::Regex;
+
+#[derive(Clone, Debug)]
+struct Entry {
+    name: String,
+    regexp: Regex,
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // FIXME: this code includes many unwrap()
+    let mut entries: Vec<Entry> = vec!();
+    for line in std::io::BufRead::lines(BufReader::new(std::io::stdin())){
+        let l = line.unwrap();
+        let mut args = l.split_whitespace();
+        entries.push(Entry {
+            name: args.next().unwrap().to_string(),
+            regexp: Regex::new(args.next().unwrap()).unwrap(),
+        });
+
+    }
+    println!("{:?}", entries);
     let mut port_names = std::fs::read_dir("/dev/").unwrap()
         .map(|res| res.map(|e| e.path()))
         .map(|path| path.unwrap().into_os_string().into_string().unwrap())
@@ -17,12 +37,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("{:?}", port_names);
     for port_name in port_names {
         let mut delay = time::delay_for(Duration::from_secs(5));
-        let mut port = File::open(port_name.clone()).await.unwrap();
+        let port = File::open(port_name.clone()).await.unwrap();
         tokio::select! {
             _ = &mut delay => {
                 println!("{}", port_name);
             }
-            _ = match_serial_port_input(port.try_clone().await.unwrap(), port_name.clone(), 9600) => {
+            _ = match_serial_port_input(port.try_clone().await.unwrap(), port_name.clone(), 9600, entries.clone()) => {
                 println!("something wrong");
             }
         }
@@ -31,7 +51,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-async fn match_serial_port_input(port: File, port_name: String, baud_rate: u32) {
+async fn match_serial_port_input(port: File, port_name: String, baud_rate: u32, entries: Vec<Entry>) {
     set_baud_rate(port_name.clone(), baud_rate);
     let mut stream= tokio::io::BufReader::new(port);
 

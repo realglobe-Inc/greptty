@@ -92,6 +92,7 @@ checksum = "59f5fff90fd5d971f936ad674802482ba441b6f09ba5e15fd8b39145582ca399"
 name = "greptty"
 version = "0.1.0"
 dependencies = [
+ "regex",
  "serialport",
  "tokio",
 ]
