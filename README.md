@@ -17,21 +17,14 @@ cargo install --path .
 
 ### Detect and read usb_co2
 
+usb_co2: https://github.com/realglobe-Inc/usb_co2
+
 ```sh
 # macOS
-./examples/detect_co2.sh /dev/cu.usbmodem <<EOF
-co2 ^co2=[0-9][0-9]*$
-EOF
+./examples/detect_co2.sh /dev/cu.usbmodem
 
 # Linux
-./examples/detect_co2.sh /dev/ttyUSB <<EOF
-co2 ^co2=[0-9][0-9]*$
-EOF
-
-# Linux (another ver.)
-./examples/detect_co2.sh /dev/ttyACM <<EOF
-co2 ^co2=[0-9][0-9]*$
-EOF
+./examples/detect_co2.sh /dev/ttyACM
 ```
 
 ## License
