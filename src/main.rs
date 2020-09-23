@@ -6,7 +6,7 @@ use std::sync::Arc;
 use tokio::fs::File;
 use tokio::prelude::*;
 use tokio::time::{self, Duration};
-use tokio::sync::{Mutex, MutexGuard};
+use tokio::sync::{Mutex};
 
 use regex::Regex;
 
@@ -28,7 +28,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut args = l.split_whitespace();
         entries.push(Entry {
             name: args.next().unwrap().to_string(),
-            regexp: Regex::new(args.next().unwrap()).unwrap(),
+            regexp: Regex::new(&["(?m)", args.next().unwrap()].concat()).unwrap(),
         });
 
     }
@@ -51,7 +51,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let port = File::open(port_name.clone()).await.unwrap();
         tokio::select! {
             _ = &mut delay => {
-                println!("{}", port_name);
             }
             _ = collect_data_from_serial_port(port.try_clone().await.unwrap(), port_name.clone(), 9600, store.clone()) => {
                 println!("something wrong");
@@ -63,6 +62,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (k, vs) in store.lock().await.iter() {
         for entry in entries.clone() {
             if vs.into_iter().map(|v| entry.regexp.is_match(&v)).all(|x| x == true) {
+                println!("{} 9600 {}", entry.name, k);
+                break;
             } else {
             }
         }
