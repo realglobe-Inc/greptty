@@ -10,8 +10,22 @@ We will provide executable binaries for Linux(amd64, arm) and Mac.
 ### Installing
 Clone this repository and execute next command at the repository directory.
 ```shell
-cargo install
+cargo install --path .
+```
+
+## Run examples
+
+### Detect and read usb_co2
+
+usb_co2: https://github.com/realglobe-Inc/usb_co2
+
+```sh
+# macOS
+./examples/detect_co2.sh /dev/cu.usbmodem
+
+# Linux
+./examples/detect_co2.sh /dev/ttyACM
 ```
 
 ## License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+This project is licensed under the MIT License - see the [LICENSE] file for details.
