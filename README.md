@@ -10,20 +10,29 @@ We will provide executable binaries for Linux(amd64, arm) and Mac.
 ### Installing
 Clone this repository and execute next command at the repository directory.
 ```shell
-cargo install
+cargo install --path .
 ```
 
-## Run eamples
+## Run examples
 
 ### Detect and read usb_co2
 
 ```sh
 # macOS
-./examples/detect_co2.sh /dev/cu.usbmodem
+./examples/detect_co2.sh /dev/cu.usbmodem <<EOF
+co2 ^co2=[0-9][0-9]*$
+EOF
+
 # Linux
-./examples/detect_co2.sh /dev/ttyUSB
-./examples/detect_co2.sh /dev/ttyACM
+./examples/detect_co2.sh /dev/ttyUSB <<EOF
+co2 ^co2=[0-9][0-9]*$
+EOF
+
+# Linux (another ver.)
+./examples/detect_co2.sh /dev/ttyACM <<EOF
+co2 ^co2=[0-9][0-9]*$
+EOF
 ```
 
 ## License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+This project is licensed under the MIT License - see the [LICENSE] file for details.
