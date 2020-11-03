@@ -43,11 +43,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // And set a port.
     let mut entries: Vec<Entry> = vec!();
     let mut s = HashMap::new();
-    let port_names = std::fs::read_dir("/dev/").unwrap()
-        .map(|res| res.map(|e| e.path()))
-        .map(|path| path.unwrap().into_os_string().into_string().unwrap())
-        .filter(|path| path.starts_with("/dev/ttyACM"))
-        .collect::<Vec<_>>();
+    let port_names = get_port_names("/dev/ttyACM".to_string())?;
     for port_name in port_names.clone() {
         s.insert(port_name, vec!());
     }
@@ -91,6 +87,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+fn get_port_names(prefix: String) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+    let port_names = std::fs::read_dir("/dev/")?
+        .map(|res| res.map(|e| e.path()))
+        .map(|path| path.unwrap().into_os_string().into_string().unwrap())
+        .filter(|path| path.starts_with(&prefix))
+        .collect::<Vec<_>>();
+    Ok(port_names)
+}
 
 fn set_baud_rate(port_name: String, baud_rate: u32) {
     // TODO: change to better way to set baud rate
