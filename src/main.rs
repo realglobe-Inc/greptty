@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate clap;
+
 use std::process::Command;
 use std::io::BufReader;
 use std::collections::HashMap;
@@ -9,6 +12,8 @@ use tokio::time::{self, Duration};
 use tokio::sync::{Mutex};
 
 use regex::Regex;
+
+use clap::{App, Arg};
 
 #[derive(Clone, Debug)]
 struct Entry {
@@ -36,17 +41,32 @@ impl Entry {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Define CLI application.
+    let app = App::new(crate_name!())
+        .version(crate_version!())
+        .author(crate_authors!())
+        .about(crate_description!())
+        .arg(Arg::from_usage("<PREFIX> 'Prefix to scan ports'"));
+    let matches = app.get_matches();
+
+    // Collect arguments.
+    let prefix = match matches.value_of("PREFIX") {
+        Some(p) => p,
+        None => panic!("something wrong"),
+    };
     // FIXME: This code includes many unwrap().
     //        And structs must tidy up this code.
 
     // Get pairs of a name and a regexp.
     // And set a port.
-    let mut entries: Vec<Entry> = vec!();
     let mut s = HashMap::new();
-    let port_names = get_port_names("/dev/ttyACM".to_string())?;
+    let port_names = get_port_names(prefix.to_string())?;
     for port_name in port_names.clone() {
         s.insert(port_name, vec!());
     }
+
+    // Build entries.
+    let mut entries: Vec<Entry> = vec!();
     let store = Arc::new(Mutex::new(s));
     for line in std::io::BufRead::lines(BufReader::new(std::io::stdin())){
         let l = line.unwrap();
