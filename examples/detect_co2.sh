@@ -1,12 +1,14 @@
 #!/bin/sh
 
-preifx="${1}"
-if [ -z "${preifx}" ]; then
+prefix="${1}"
+if [ -z "${prefix}" ]; then
   echo "spefify device path prefix as 1st argument" >&2
   exit 1
 fi
 
-greptty_result="$(printf 'co2 ^co2=[0-9][0-9]*' | greptty -b 9600 "${prefix}" | grep '^co2' | head -n 1)"
+# todo: -b option should be implemented
+#greptty_result="$(printf 'co2 co2=[0-9][0-9]*' | greptty -b 9600 "${prefix}" | grep '^co2' | head -n 1)"
+greptty_result="$(printf 'co2 co2=[0-9][0-9]*' | greptty "${prefix}" | grep '^co2' | head -n 1)"
 co2_baud_rate="$(echo "${greptty_result}" | cut -d ' ' -f 2)"
 co2_device="$(echo "${greptty_result}" | cut -d ' ' -f 3)"
 
